@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit SubCategories{% endblock %}
+
+{% block body %}
+    <h1>Edit SubCategories</h1>
+
+    {{ include('admin/sub_categories/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_sub_categories_index') }}">back to list</a>
+
+    {{ include('admin/sub_categories/_delete_form.html.twig') }}
+{% endblock %}
