@@ -6,7 +6,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        user_provider:
+        admin_provider:
             entity:
                 class: App\Entity\Admin
                 property: email
@@ -16,9 +16,9 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
-        user_area:
+        admin_area:
             lazy: true
-            provider: user_provider
+            provider: admin_provider
             form_login:
                 login_path: admin_login
                 check_path: admin_login

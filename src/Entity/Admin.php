@@ -106,4 +106,10 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $data;
     }
+
+    #[\Deprecated]
+    public function eraseCredentials(): void
+    {
+        // @deprecated, to be removed when upgrading to Symfony 8
+    }
 }
