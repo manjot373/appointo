@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Appointo{% endblock %}
+
+{% block stylesheets %}
+<style>
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(180deg, #f5f7fb 0%, #eef1f8 100%);
+    margin: 0;
+    color: #333;
+}
+
+/* Header section */
+.hero {
+    text-align: center;
+    padding: 50px 20px 20px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin-bottom: 5px;
+    color: #4a6cf7;
+}
+
+.hero h2 {
+    font-size: 20px;
+    font-weight: 400;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.hero h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+/* Categories grid */
+.categories-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    max-width: 1100px;
+    margin: 0 auto 50px;
+    padding: 10px 20px 40px;
+}
+
+.category-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 28px 20px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.category-card i {
+    font-size: 42px;
+    color: #4a6cf7;
+    margin-bottom: 12px;
+}
+
+.category-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Hover effect */
+.category-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(74,108,247,0.15);
+}
+
+/* Mobile refinement */
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 34px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="hero">
+    <h1>Appointo</h1>
+    <h2>Book Your Appointments Today</h2>
+    <h3>Categories</h3>
+</div>
+
+<div class="categories-container">
+
+  <div class="category-card">
+    <i class="fa-solid fa-heart-pulse"></i>
+    <h3>Health & Wellness</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-scissors"></i>
+    <h3>Beauty & Personal Care</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-dumbbell"></i>
+    <h3>Fitness & Training</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-graduation-cap"></i>
+    <h3>Education & Coaching</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-car"></i>
+    <h3>Automobile Services</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-briefcase"></i>
+    <h3>Professional Services</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-house"></i>
+    <h3>Home & Repair Services</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-camera"></i>
+    <h3>Events & Creative</h3>
+  </div>
+
+  <div class="category-card">
+    <i class="fa-solid fa-spa"></i>
+    <h3>Lifestyle & Others</h3>
+  </div>
+
+</div>
+
+{% endblock %}
