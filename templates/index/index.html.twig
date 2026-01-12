@@ -92,12 +92,18 @@ body {
 
 <div class="categories-container">
 
-  <div class="category-card">
-    <i class="fa-solid fa-heart-pulse"></i>
-    <h3>Health & Wellness</h3>
-  </div>
+{% for category in categories %}
 
   <div class="category-card">
+    <i class= "{{ category.iconCode }}"></i>
+    <h3>{{ category.name }}</h3>
+  </div>
+
+{% else %}
+<div> <h1>No Records Found </h1></div>
+
+{% endfor %}
+  {# <div class="category-card">
     <i class="fa-solid fa-scissors"></i>
     <h3>Beauty & Personal Care</h3>
   </div>
@@ -135,7 +141,7 @@ body {
   <div class="category-card">
     <i class="fa-solid fa-spa"></i>
     <h3>Lifestyle & Others</h3>
-  </div>
+  </div> #}
 
 </div>
 

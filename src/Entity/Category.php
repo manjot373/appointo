@@ -18,15 +18,22 @@ class Category
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+
+    #[ORM\Column(length: 255)]
+    private ?string $icon_code = null;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    private ?self $parent = null;
+
     /**
-     * @var Collection<int, SubCategories>
+     * @var Collection<int, self>
      */
-    #[ORM\OneToMany(targetEntity: SubCategories::class, mappedBy: 'category')]
-    private Collection $subCategories;
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
+    private Collection $categories;
 
     public function __construct()
     {
-        $this->subCategories = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,30 +53,55 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection<int, SubCategories>
-     */
-    public function getSubCategories(): Collection
+
+    public function getIconCode(): ?string
     {
-        return $this->subCategories;
+        return $this->icon_code;
     }
 
-    public function addSubCategory(SubCategories $subCategory): static
+    public function setIconCode(string $icon_code): static
     {
-        if (!$this->subCategories->contains($subCategory)) {
-            $this->subCategories->add($subCategory);
-            $subCategory->setCategory($this);
+        $this->icon_code = $icon_code;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): static
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(self $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+            $category->setParent($this);
         }
 
         return $this;
     }
 
-    public function removeSubCategory(SubCategories $subCategory): static
+    public function removeCategory(self $category): static
     {
-        if ($this->subCategories->removeElement($subCategory)) {
+        if ($this->categories->removeElement($category)) {
             // set the owning side to null (unless already changed)
-            if ($subCategory->getCategory() === $this) {
-                $subCategory->setCategory(null);
+            if ($category->getParent() === $this) {
+                $category->setParent(null);
             }
         }
 

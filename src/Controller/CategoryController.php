@@ -6,7 +6,9 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,6 +16,12 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/category')]
 final class CategoryController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route(name: 'app_category_index', methods: ['GET'])]
     public function index(CategoryRepository $categoryRepository): Response
     {
@@ -25,8 +33,18 @@ final class CategoryController extends AbstractController
     #[Route('/new', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+
         $category = new Category();
-        $form = $this->createForm(CategoryType::class, $category);
+        $form = $this->createFormBuilder($category)
+            ->add('name')
+            ->add('icon_code')
+            ->add('parent', ChoiceType::class, [
+                'choices' => $this->getCategories(),
+                'placeholder' => 'Select a parent category',
+                'required' => false, 
+                'attr' => ['class' => 'bg-gray']
+            ])
+            ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,11 +89,39 @@ final class CategoryController extends AbstractController
     #[Route('/{id}', name: 'app_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $category->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($category);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_category_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    public function getCategories()
+    {
+        $categorys = $this->entityManager->getRepository(Category::class)->findBy(['parent' => null]);
+        $array = [];
+        foreach ($categorys as $category) {
+
+                $array[$category->getName()] = $category->getId();
+
+                $subCategorys = $this->getSubCategorys($category->getId());
+                if ($subCategorys) {
+                    $array = array_merge($array, $subCategorys);
+                }
+        }
+
+        return $array;
+    }
+    public function getSubCategorys($cid)
+    {
+
+        $subCategorys = $this->entityManager->getRepository(Category::class)->findBy(['parent' => $cid]);
+        $array = [];
+        foreach ($subCategorys as $category) {
+            $array[" - ".$category->getName()] = $category->getId();
+        }
+
+        return $array;
     }
 }
