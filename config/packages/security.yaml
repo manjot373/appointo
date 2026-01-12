@@ -17,6 +17,7 @@ security:
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
         admin_area:
+            pattern: ^/admin/
             lazy: true
             provider: admin_provider
             form_login:
