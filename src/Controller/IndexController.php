@@ -9,7 +9,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class IndexController extends AbstractController
 {
-    #[Route('/admin', name: 'app_index')]
+
+    #[Route('/admin/home', name: 'app_index')]
     public function index(CategoryRepository $categoryRepository): Response
     {
         return $this->render('index/index.html.twig', [

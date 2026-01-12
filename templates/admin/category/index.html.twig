@@ -3,6 +3,11 @@
 {% block title %}Categories{% endblock %}
 
 {% block body %}
+
+<div class="container">
+
+<a class="btn btn-primary mb-4" href="{{ path('app_category_new') }}">Create new</a>
+
     <h1>Categories</h1>
 
     <table class="table">
@@ -30,6 +35,6 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
 
-    <a class="btn btn-primary" href="{{ path('app_category_new') }}">Create new</a>
 {% endblock %}

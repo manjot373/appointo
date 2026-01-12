@@ -38,16 +38,24 @@ final class CategoryController extends AbstractController
         $form = $this->createFormBuilder($category)
             ->add('name')
             ->add('icon_code')
-             ->add('parent', ChoiceType::class, [
+
+            ->add('parentId', ChoiceType::class, [
                 'choices' => $this->getCategories(),
                 'placeholder' => 'Select a parent category',
-                'required' => false, 
-                'attr' => ['class' => 'bg-gray']
+                'required' => false,
+                'mapped' => false,
             ])
             ->getForm();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $cid = $form->get('parentId')->getData();
+            
+            $parent = $this->entityManager->getRepository(Category::class)->findOneBy(['id' => $cid]);
+         
+            if ($parent) {
+                $category->setParent($parent);
+            }
             $entityManager->persist($category);
             $entityManager->flush();
 
@@ -65,6 +73,7 @@ final class CategoryController extends AbstractController
     {
         return $this->render('admin/category/show.html.twig', [
             'category' => $category,
+            'id' => $category->getId(),
         ]);
     }
 
@@ -103,12 +112,12 @@ final class CategoryController extends AbstractController
         $array = [];
         foreach ($categorys as $category) {
 
-                $array[$category->getName()] = $category->getId();
+            $array[$category->getName()] = $category->getId();
 
-                $subCategorys = $this->getSubCategorys($category->getId());
-                if ($subCategorys) {
-                    $array = array_merge($array, $subCategorys);
-                }
+            $subCategorys = $this->getSubCategorys($category->getId());
+            if ($subCategorys) {
+                $array = array_merge($array, $subCategorys);
+            }
         }
 
         return $array;
@@ -119,7 +128,7 @@ final class CategoryController extends AbstractController
         $subCategorys = $this->entityManager->getRepository(Category::class)->findBy(['parent' => $cid]);
         $array = [];
         foreach ($subCategorys as $category) {
-            $array[" - ".$category->getName()] = $category->getId();
+            $array[" - " . $category->getName()] = $category->getId();
         }
 
         return $array;
