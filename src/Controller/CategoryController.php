@@ -38,7 +38,7 @@ final class CategoryController extends AbstractController
         $form = $this->createFormBuilder($category)
             ->add('name')
             ->add('icon_code')
-            ->add('parent', ChoiceType::class, [
+             ->add('parent', ChoiceType::class, [
                 'choices' => $this->getCategories(),
                 'placeholder' => 'Select a parent category',
                 'required' => false, 

@@ -19,10 +19,11 @@ class Category
     private ?string $name = null;
 
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $icon_code = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'categories')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?self $parent = null;
 
     /**
