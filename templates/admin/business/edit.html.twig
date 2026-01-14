@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}Edit Business{% endblock %}
 
@@ -87,12 +87,12 @@ body {
 </div>
 
 <div class="form-container">
-    {{ include('business/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('admin/business/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('app_business_index') }}" class="btn-secondary">← Back to list</a>
 
     <div class="delete-form">
-        {{ include('business/_delete_form.html.twig') }}
+        {{ include('admin/business/_delete_form.html.twig') }}
     </div>
 </div>
 

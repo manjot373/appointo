@@ -3,24 +3,30 @@
 namespace App\Form;
 
 use App\Entity\Business;
+use App\Entity\Department;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BusinessType extends AbstractType
+class DepartmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        
         $builder
             ->add('name')
-            ->add('address')
+            // ->add('business', EntityType::class, [
+            //     'class' => Business::class,
+            //     'choice_label' => 'id',
+            // ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Business::class,
+            'data_class' => Department::class,
         ]);
     }
 }

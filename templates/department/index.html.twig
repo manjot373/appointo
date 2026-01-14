@@ -1,6 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}Business Directory{% endblock %}
+{% block title %}Department Directory{% endblock %}
 
 {% block stylesheets %}
 <style>
@@ -96,7 +96,7 @@ body {
 {% block body %}
 
 <div class="page-header">
-    <h1>All Businesses</h1>
+    <h1>All Departments</h1>
 </div>
 
 <div class="table-container">
@@ -105,26 +105,22 @@ body {
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Address</th>
-                <th>Slots</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for business in businesses %}
+        {% for department in departments %}
             <tr>
-                <td>{{ business.id }}</td>
-                <td>{{ business.name }}</td>
-                <td>{{ business.address }}</td>
-                <td>{{ business.slot }}</td>
+                <td>{{ department.id }}</td>
+                <td>{{ department.name }}</td>
                 <td class="action-links">
-                    <a href="{{ path('app_business_show', {'id': business.id}) }}">Show</a>
-                    <a href="{{ path('app_business_edit', {'id': business.id}) }}">Edit</a>
+                    <a href="{{ path('app_department_show', {'id': department.id}) }}">Show</a>
+                    <a href="{{ path('app_department_edit', {'id': department.id}) }}">Edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5" class="empty-state">No records found</td>
+                <td colspan="3" class="empty-state">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
@@ -132,7 +128,7 @@ body {
 </div>
 
 <div style="text-align:center;">
-    <a href="{{ path('app_business_new') }}" class="create-btn">+ Add New Business</a>
+    <a href="{{ path('app_department_new') }}" class="create-btn">+ Add New Department</a>
 </div>
 
 {% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Create New Department{% endblock %}
+
+{% block stylesheets %}
+<style>
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f5f7fb;
+    color: #333;
+}
+
+/* Page header */
+.page-header {
+    text-align: center;
+    padding: 40px 20px 20px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    color: #4a6cf7;
+    margin-bottom: 10px;
+}
+
+/* Form container */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto 40px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    padding: 30px;
+}
+
+/* Action bar */
+.action-bar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.action-btn {
+    display: inline-block;
+    margin: 0 6px;
+    padding: 10px 18px;
+    background: #4a6cf7;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.action-btn:hover {
+    background: #3956d8;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <h1>Create New Department</h1>
+</div>
+
+<div class="form-container">
+
+    {{ include('department/_form.html.twig') }}
+
+    <div class="action-bar">
+        <a href="{{ path('app_department_index') }}" class="action-btn">Back to list</a>
+    </div>
+
+</div>
+
+{% endblock %}

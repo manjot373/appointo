@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
 {% block title %}New Business{% endblock %}
 
@@ -91,7 +91,7 @@ body {
     <div class="form-card">
         <h1>Add New Business</h1>
 
-        {{ include('business/_form.html.twig') }}
+        {{ include('admin/business/_form.html.twig') }}
 
         <a href="{{ path('app_business_index') }}" class="back-link">
             ← Back to list
