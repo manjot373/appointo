@@ -1,4 +1,4 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'business/base.html.twig' %}
 
 {% block title %}Department Details{% endblock %}
 
@@ -102,10 +102,10 @@ body {
 
     <div class="action-bar">
         <a href="{{ path('app_department_index') }}" class="action-btn">Back to list</a>
-        <a href="{{ path('app_department_edit', {'id': department.id}) }}" class="action-btn">Edit</a>
+        <a href="{{ path('app_department_edit', {'guid': department.guid}) }}" class="action-btn">Edit</a>
 
         <span class="delete-form">
-            {{ include('department/_delete_form.html.twig') }}
+            {{ include('business/department/_delete_form.html.twig') }}
         </span>
     </div>
 

@@ -4,7 +4,6 @@ namespace App\Controller\business;
 
 use App\Entity\Department;
 use App\Form\DepartmentType;
-use App\Repository\DepartmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +18,7 @@ final class DepartmentController extends AbstractController
     {
         $business = $this->getUser();
         $departments = $em->getRepository(Department::class)->findBy([ "business" => $business]);
-        return $this->render('department/index.html.twig', [
+        return $this->render('business/department/index.html.twig', [
             'departments' => $departments
         ]);
     }
@@ -41,22 +40,22 @@ final class DepartmentController extends AbstractController
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('department/new.html.twig', [
+        return $this->render('business/department/new.html.twig', [
             'department' => $department,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_department_show', methods: ['GET'])]
+    #[Route('/{guid}', name: 'app_department_show', methods: ['GET'])]
     public function show(Department $department, EntityManagerInterface $em): Response
     {
        
-        return $this->render('department/show.html.twig', [
+        return $this->render('business/department/show.html.twig', [
             'department' => $department,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_department_edit', methods: ['GET', 'POST'])]
+    #[Route('/{guid}/edit', name: 'app_department_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Department $department, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(DepartmentType::class, $department);
@@ -68,13 +67,13 @@ final class DepartmentController extends AbstractController
             return $this->redirectToRoute('app_department_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('department/edit.html.twig', [
+        return $this->render('business/department/edit.html.twig', [
             'department' => $department,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_department_delete', methods: ['POST'])]
+    #[Route('/{guid}', name: 'app_department_delete', methods: ['POST'])]
     public function delete(Request $request, Department $department, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$department->getId(), $request->getPayload()->getString('_token'))) {

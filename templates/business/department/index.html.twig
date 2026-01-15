@@ -1,4 +1,4 @@
-{% extends 'admin/base.html.twig' %}
+{% extends 'business/base.html.twig' %}
 
 {% block title %}Department Directory{% endblock %}
 
@@ -114,8 +114,8 @@ body {
                 <td>{{ department.id }}</td>
                 <td>{{ department.name }}</td>
                 <td class="action-links">
-                    <a href="{{ path('app_department_show', {'id': department.id}) }}">Show</a>
-                    <a href="{{ path('app_department_edit', {'id': department.id}) }}">Edit</a>
+                    <a href="{{ path('app_department_show', {'guid': department.guid}) }}">Show</a>
+                    <a href="{{ path('app_department_edit', {'guid': department.guid}) }}">Edit</a>
                 </td>
             </tr>
         {% else %}

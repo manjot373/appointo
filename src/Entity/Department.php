@@ -5,15 +5,15 @@ namespace App\Entity;
 use App\Repository\DepartmentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Uuid;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Department
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[ORM\HasLifecycleCallbacks]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -22,19 +22,27 @@ class Department
     #[ORM\ManyToOne(inversedBy: 'departments')]
     private ?Business $business = null;
 
-    #[ORM\Column(type: Types::GUID)]
+    #[ORM\Column(type: Types::GUID, unique: true)]
     private ?string $guid = null;
 
-    // public function prePersist(){
+    #[ORM\PrePersist]
+    public function generateGuid(): void
+    {
+        if ($this->guid === null) {
+            $this->guid = Uuid::v7()->toRfc4122();
+        }
+    }
 
-
-    //     $this->guid = (string) Uuid::();
-
-    // }
+    // Getters / setters
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getGuid(): ?string
+    {
+        return $this->guid;
     }
 
     public function getName(): ?string
@@ -45,7 +53,6 @@ class Department
     public function setName(string $name): static
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -57,19 +64,6 @@ class Department
     public function setBusiness(?Business $business): static
     {
         $this->business = $business;
-
-        return $this;
-    }
-
-    public function getGuid(): ?string
-    {
-        return $this->guid;
-    }
-
-    public function setGuid(string $guid): static
-    {
-        $this->guid = $guid;
-
         return $this;
     }
 }
