@@ -17,6 +17,17 @@ security:
             entity:
                 class: App\Entity\Business
                 property: email
+        
+        staff_provider:
+            entity:
+                class: App\Entity\Staff
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\Staff
+                property: email
+        # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
         dev:
@@ -48,7 +59,20 @@ security:
             logout:
                 path: /business/logout
                 target: /
-           
+
+
+        staff_area:
+            pattern: ^/staff
+            lazy: true
+            provider: staff_provider
+            form_login:
+                login_path: staff_login
+                check_path: staff_login
+                enable_csrf: true
+                default_target_path: staff_dashboard
+            logout:
+                path: /staff/logout
+                target: /
             # enable csrf protection for forms
 
             # Activate different ways to authenticate:
@@ -63,5 +87,7 @@ security:
          - { path: ^/admin/, roles: ROLE_SUPER_ADMIN }
          - { path: ^/business/login, roles: PUBLIC_ACCESS }
          - { path: ^/business/, roles: ROLE_ADMIN }
+         - { path: ^/staff/login, roles: PUBLIC_ACCESS }
+         - { path: ^/staff/, roles: ROLE_STAFF }
 
         # - { path: ^/profile, roles: ROLE_USER }

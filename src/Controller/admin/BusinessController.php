@@ -11,15 +11,24 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/admin/business')]
 final class BusinessController extends AbstractController
 {
+    
     private EntityManagerInterface $entityManager;
-    public function __construct(EntityManagerInterface $entityManager){
-        return $this->entityManager = $entityManager;
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ){
+        $this->entityManager = $entityManager;
+        $this->passwordHasher = $passwordHasher;
     }
+
 
     #[Route(name: 'app_business_index', methods: ['GET'])]
     public function index(BusinessRepository $businessRepository): Response
@@ -35,7 +44,9 @@ final class BusinessController extends AbstractController
         $business = new Business();
         $form = $this->createFormBuilder($business)
         ->add('name')
+        ->add('password')
         ->add('address')
+        ->add('email')
         ->add('category', ChoiceType::class, [
             'choices' => $this->getCategories(),
             'placeholder' => 'Select a parent category',
@@ -52,6 +63,11 @@ final class BusinessController extends AbstractController
             if($category){
                 $business->setCategory($category);
             }
+            $hashedPassword = $this->passwordHasher->hashPassword($business, $business->getPassword()
+        );
+
+        $business->setPassword($hashedPassword);
+
             // $business->setCategory($category);
             $entityManager->persist($business);
             $entityManager->flush();

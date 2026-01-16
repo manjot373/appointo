@@ -41,6 +41,14 @@ class LoginController extends AbstractController
     //     return $this->render('admin/login.html.twig');
     // }
 
+     #[Route('/staff', name: 'staff_dashboard')]
+    function staff_dashboard()
+    {
+
+        return $this->render('business/staff/dashboard.html.twig');
+    }
+
+
     #[Route('/business/login', name: 'business_login')]
     function business_login(AuthenticationUtils $authenticationUtils)
     {
@@ -59,6 +67,30 @@ class LoginController extends AbstractController
 
     #[Route('/business/logout', name: 'business_logout')]
     function business_logout()
+    {
+
+        return null;
+    }
+
+
+    #[Route('/staff/login', name: 'staff_login')]
+    function staff_login(AuthenticationUtils $authenticationUtils)
+    {
+
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('login/staff_login.html.twig', [
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ]);
+    }
+
+    #[Route('/staff/logout', name: 'staff_logout')]
+    function staff_logout()
     {
 
         return null;

@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: BusinessRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\HasLifecycleCallbacks]
 class Business implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -48,9 +49,24 @@ class Business implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Department::class, mappedBy: 'business')]
     private Collection $departments;
 
+    /**
+     * @var Collection<int, Staff>
+     */
+    #[ORM\OneToMany(targetEntity: Staff::class, mappedBy: 'business')]
+    private Collection $staff;
+
     public function __construct()
     {
         $this->departments = new ArrayCollection();
+        $this->staff = new ArrayCollection();
+    }
+    // on prepersist
+    #[ORM\PrePersist]
+    public function onPrePersist()
+    {
+        $this->roles = ['ROLE_BUSINESS'];
+        // $this->name = strtoupper($this->name);
+        // $this->email = strtolower($this->email);
     }
 
     public function getId(): ?int
@@ -194,6 +210,36 @@ class Business implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($department->getBusiness() === $this) {
                 $department->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Staff>
+     */
+    public function getStaff(): Collection
+    {
+        return $this->staff;
+    }
+
+    public function addStaff(Staff $staff): static
+    {
+        if (!$this->staff->contains($staff)) {
+            $this->staff->add($staff);
+            $staff->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStaff(Staff $staff): static
+    {
+        if ($this->staff->removeElement($staff)) {
+            // set the owning side to null (unless already changed)
+            if ($staff->getBusiness() === $this) {
+                $staff->setBusiness(null);
             }
         }
 

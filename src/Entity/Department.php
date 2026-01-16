@@ -29,7 +29,7 @@ class Department
     public function generateGuid(): void
     {
         if ($this->guid === null) {
-            $this->guid = Uuid::v7()->toRfc4122();
+            $this->guid = Uuid::v7();
         }
     }
 
