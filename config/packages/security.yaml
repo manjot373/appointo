@@ -15,7 +15,7 @@ security:
 
         business_provider:
             entity:
-                class: App\Entity\Business
+                class: App\Entity\BusinessUser
                 property: email
         
         staff_provider:
@@ -25,8 +25,9 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\Staff
-                property: email
+                class: App\Entity\BusinessUser
+                property: username
+        # used to reload user from session & other features (e.g. switch_user)
         # used to reload user from session & other features (e.g. switch_user)
 
     firewalls:
@@ -86,7 +87,7 @@ security:
          - { path: ^/admin/login, roles: PUBLIC_ACCESS }
          - { path: ^/admin/, roles: ROLE_SUPER_ADMIN }
          - { path: ^/business/login, roles: PUBLIC_ACCESS }
-         - { path: ^/business/, roles: ROLE_ADMIN }
+         - { path: ^/business, roles: [ROLE_BUSINESS] }
          - { path: ^/staff/login, roles: PUBLIC_ACCESS }
          - { path: ^/staff/, roles: ROLE_STAFF }
 

@@ -1,0 +1,13 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Edit Business{% endblock %}
+
+{% block body %}
+    <h1>Edit Business</h1>
+
+    {{ include('admin/businessuser/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('business_user_index') }}">back to list</a>
+
+    {{ include('admin/businessuser/_delete_form.html.twig') }}
+{% endblock %}

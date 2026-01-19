@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Unauthorized{% endblock %}
+
+{% block body %}
+<style>
+    .error-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+        padding: 2rem;
+    }
+    .error-box {
+        background: #ffffff;
+        padding: 3rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        max-width: 520px;
+        width: 100%;
+    }
+    .error-code {
+        font-size: 5.5rem;
+        font-weight: bold;
+        color: #b33939;
+        margin: 0;
+    }
+    .error-message {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+        color: #444;
+    }
+    .error-description {
+        color: #666;
+        margin-bottom: 2rem;
+    }
+    .error-button {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: #2c3e50;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.2s ease-in-out;
+        margin: 0.25rem;
+    }
+    .error-button:hover {
+        background: #1a252f;
+    }
+</style>
+
+<div class="error-container">
+    <div class="error-box">
+        <h1 class="error-code">401</h1>
+        <div class="error-message">Unauthorized Access</div>
+        <div class="error-description">
+            You do not have permission to access this page.
+            Please log in with an authorized account.
+        </div>
+
+        <a href="{{ path('business_login') }}" class="error-button">
+            Go to Login
+        </a>
+
+        <a href="{{ path('business_user_index') }}" class="error-button">
+            Return to Homepage
+        </a>
+    </div>
+</div>
+{% endblock %}

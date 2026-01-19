@@ -33,7 +33,7 @@ final class DepartmentController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $department->setBusiness($business);
+            
             $entityManager->persist($department);
             $entityManager->flush();
 

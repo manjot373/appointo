@@ -3,9 +3,8 @@
 namespace App\Command;
 
 use App\Entity\Business;
-
-use App\Repository\BusinessRepository;
-
+use App\Entity\BusinessUser;
+use App\Repository\BusinessUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +21,7 @@ class AddBusinessCommand extends Command
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
-        private readonly BusinessRepository $businessRepository,
+        private readonly BusinessUserRepository $businessRepository,
         private readonly UserPasswordHasherInterface $passwordHasher
     ) {
         parent::__construct();
@@ -60,14 +59,13 @@ class AddBusinessCommand extends Command
             $name = $io->ask('Business name');
             $address = $io->ask('Business address');
 
-            $business = new Business();
+            $business = new BusinessUser();
             $business->setEmail($email);
 
             $hashed = $this->passwordHasher->hashPassword($business, $password);
             $business->setPassword($hashed);
 
-            $business->setName($name);
-            $business->setAddress($address);
+            $business->setUsername($name);
             $business->setRoles(['ROLE_BUSINESS','ROLE_ADMIN']);
 
            

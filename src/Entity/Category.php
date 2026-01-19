@@ -32,16 +32,10 @@ class Category
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $categories;
 
-    /**
-     * @var Collection<int, Business>
-     */
-    #[ORM\OneToMany(targetEntity: Business::class, mappedBy: 'category')]
-    private Collection $businesses;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->businesses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,33 +110,4 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection<int, Business>
-     */
-    public function getBusinesses(): Collection
-    {
-        return $this->businesses;
-    }
-
-    public function addBusiness(Business $business): static
-    {
-        if (!$this->businesses->contains($business)) {
-            $this->businesses->add($business);
-            $business->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBusiness(Business $business): static
-    {
-        if ($this->businesses->removeElement($business)) {
-            // set the owning side to null (unless already changed)
-            if ($business->getCategory() === $this) {
-                $business->setCategory(null);
-            }
-        }
-
-        return $this;
-    }
 }

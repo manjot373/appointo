@@ -1,0 +1,30 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Business User{% endblock %}
+
+{% block body %}
+    <h1>Business User</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ businessUser.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ businessUser.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ businessUser.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('business_user_index') }}">back to list</a>
+
+    <a href="{{ path('business_user_edit', {'guid': businessUser.guid}) }}">Edit</a>
+
+    {{ include('admin/businessuser/_delete_form.html.twig') }}
+{% endblock %}

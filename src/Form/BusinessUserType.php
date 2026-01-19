@@ -2,25 +2,25 @@
 
 namespace App\Form;
 
-use App\Entity\Business;
+use App\Entity\BusinessUser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BusinessType extends AbstractType
+class BusinessUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('address')
-        ;
+            ->add('username')
+            ->add('email')
+            ->add('password')        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Business::class,
+            'data_class' => BusinessUser::class,
         ]);
     }
 }

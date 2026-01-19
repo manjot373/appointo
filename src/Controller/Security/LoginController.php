@@ -34,12 +34,12 @@ class LoginController extends AbstractController
     }
 
 
-    // #[Route('/', name: 'admin_dashboard')]
-    // function admin_dashboard()
-    // {
+    #[Route('/', name: 'admin_dashboard')]
+    function admin_dashboard()
+    {
 
-    //     return $this->render('admin/login.html.twig');
-    // }
+        return $this->render('admin/dashboard.html.twig');
+    }
 
      #[Route('/staff', name: 'staff_dashboard')]
     function staff_dashboard()
@@ -72,6 +72,12 @@ class LoginController extends AbstractController
         return null;
     }
 
+     #[Route('/business/dashboard', name: 'business_dashboard')]
+    function business_dashboard()
+    {
+
+        return $this->render('business/dashboard.html.twig');
+    }
 
     #[Route('/staff/login', name: 'staff_login')]
     function staff_login(AuthenticationUtils $authenticationUtils)

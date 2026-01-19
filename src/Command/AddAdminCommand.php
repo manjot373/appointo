@@ -68,7 +68,7 @@ class AddAdminCommand extends Command
         $a = new Admin();
         $a->setEmail($email)
         ->setPassword($this->hasher->hashPassword($a,$password))
-        ->setRoles(['ROLE_ADMIN']);
+        ->setRoles(['ROLE_SUPER_ADMIN']);
 
         $this->em->persist($a);
         $this->em->flush();
