@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Business index{% endblock %}
+
+{% block body %}
+    <h1>Business index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for business in businesses %}
+            <tr>
+                <td>{{ business.id }}</td>
+                <td>{{ business.name }}</td>
+                <td>{{ business.address }}</td>
+                <td>
+                    <a href="{{ path('app_business_show', {'id': business.id}) }}">show</a>
+                    <a href="{{ path('app_business_edit', {'id': business.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_business_new') }}">Create new</a>
+{% endblock %}

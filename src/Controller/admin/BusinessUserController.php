@@ -2,6 +2,7 @@
 
 namespace App\Controller\admin;
 
+use App\Entity\Business;
 use App\Entity\BusinessUser;
 use App\Form\BusinessUserType;
 use App\Repository\BusinessUserRepository;
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
-#[Route('/business/user')]
+#[Route('/admin/business/user')]
 final class BusinessUserController extends AbstractController
 {
     private UserPasswordHasherInterface $hashedPassword;
@@ -33,7 +34,7 @@ final class BusinessUserController extends AbstractController
     {
         $user = $this->getUser();
         $business = $this->bs->getBusinessByUser($user);
-        $businessUser = $entityManager->getRepository(BusinessUser::class)->findBy(['business' => $business]);
+        $businessUser = $entityManager->getRepository(BusinessUser::class)->findAll();
         return $this->render('admin/businessuser/index.html.twig', [
             'businessUser' => $businessUser
         ]);
@@ -47,25 +48,27 @@ final class BusinessUserController extends AbstractController
     {
        
         $bu = new BusinessUser();
-        $user = $this->getUser();
-        // $business = $this->bs->getBusinessByUser($user);
+        $business = $entityManager->getRepository(Business::class)->findAll();
        
         $form = $this->createForm(BusinessUserType::class, $bu)
-        ->add('roles', ChoiceType::class, [
-                'choices' => ['ROLE_BUSINESS' => 'ROLE_BUSINESS', 'ROLE_STAFF' => 'ROLE_STAFF'],
-                'placeholder' => 'Select a Role',
-                'required' => false,
-                'mapped' => false,
-                'multiple' => true,
-                'expanded' => true,
-            ]);
+        ->add('business', ChoiceType::class, [
+            "choices" => $business,
+            "placeholder" => "Select Business",
+            "required" => true,
+            "mapped" => false,
+            "choice_label" => function ($business) {
+                return $business->getName();
+            }
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $this->hashedPassword->hashPassword($bu, $bu->getPassword());
+            $bu->setBusiness($form->get('business')->getData());
+
             $bu->setPassword($hashedPassword);
-            $bu->setRoles($form->get('roles')->getData());
+            $bu->setRoles(["ROLE_BUSINESS", "ROLE_STAFF"]);
             // if(in_array('ROLE_STAFF', $bu->getRoles())){
             //     $bu->setBusiness($business);
             // }

@@ -42,18 +42,13 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $guid = null;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'businessUsers')]
-    private ?self $businessId = null;
+    #[ORM\ManyToOne(inversedBy: 'businessUsers')]
+    private ?Business $business = null;
 
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'businessId')]
-    private Collection $businessUsers;
 
     public function __construct()
     {
-        $this->businessUsers = new ArrayCollection();
+        
     }
 
     #[ORM\PrePersist]
@@ -166,47 +161,17 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getBusinessId(): ?self
+    public function getBusiness(): ?Business
     {
-        return $this->businessId;
+        return $this->business;
     }
 
-    public function setBusinessId(?self $businessId): static
+    public function setBusiness(?Business $business): static
     {
-        $this->businessId = $businessId;
+        $this->business = $business;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getBusinessUsers(): Collection
-    {
-        return $this->businessUsers;
-    }
-
-    public function addBusinessUser(self $businessUser): static
-    {
-        if (!$this->businessUsers->contains($businessUser)) {
-            $this->businessUsers->add($businessUser);
-            $businessUser->setBusinessId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBusinessUser(self $businessUser): static
-    {
-        if ($this->businessUsers->removeElement($businessUser)) {
-            // set the owning side to null (unless already changed)
-            if ($businessUser->getBusinessId() === $this) {
-                $businessUser->setBusinessId(null);
-            }
-        }
-
-        return $this;
-    }
-
-
+   
 }
