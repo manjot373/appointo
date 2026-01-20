@@ -16,8 +16,8 @@ final class DepartmentController extends AbstractController
     #[Route(name: 'app_department_index', methods: ['GET'])]
     public function index(EntityManagerInterface $em): Response
     {
-        $business = $this->getUser();
-        $departments = $em->getRepository(Department::class)->findBy([ "business" => $business]);
+        $businessUser = $this->getUser();
+        $departments = $em->getRepository(Department::class)->findBy(["businessUser" => $businessUser]);
         return $this->render('business/department/index.html.twig', [
             'departments' => $departments
         ]);
@@ -26,14 +26,13 @@ final class DepartmentController extends AbstractController
     #[Route('/new', name: 'app_department_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $business = $this->getUser();
         $department = new Department();
         $form = $this->createForm(DepartmentType::class, $department);
         $form->handleRequest($request);
-
+        $businessUser = $this->getUser();
         if ($form->isSubmitted() && $form->isValid()) {
+            $department->setBusinessUser($businessUser);
 
-            
             $entityManager->persist($department);
             $entityManager->flush();
 
@@ -49,7 +48,7 @@ final class DepartmentController extends AbstractController
     #[Route('/{guid}', name: 'app_department_show', methods: ['GET'])]
     public function show(Department $department, EntityManagerInterface $em): Response
     {
-       
+
         return $this->render('business/department/show.html.twig', [
             'department' => $department,
         ]);
@@ -76,7 +75,7 @@ final class DepartmentController extends AbstractController
     #[Route('/{guid}', name: 'app_department_delete', methods: ['POST'])]
     public function delete(Request $request, Department $department, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$department->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $department->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($department);
             $entityManager->flush();
         }

@@ -23,12 +23,10 @@ class AppExtensionRuntime implements RuntimeExtensionInterface
     public function getBusiness()
     {
         $user = $this->security->getUser();
-
         if (!$user) {
             return null;
         }
         $business = $this->businessService->getBusinessByUser($user);
- 
         return $business;
     }
 }

@@ -18,7 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
 #[Route('/admin/business/user')]
-final class BusinessUserController extends AbstractController
+final class AdminBusinessUserController extends AbstractController
 {
     private UserPasswordHasherInterface $hashedPassword;
     private BusinessService $bs;

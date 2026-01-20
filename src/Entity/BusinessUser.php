@@ -45,10 +45,16 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'businessUsers')]
     private ?Business $business = null;
 
+    /**
+     * @var Collection<int, Department>
+     */
+    #[ORM\OneToMany(targetEntity: Department::class, mappedBy: 'businessUser')]
+    private Collection $departments;
+
 
     public function __construct()
     {
-        
+        $this->departments = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -169,6 +175,36 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBusiness(?Business $business): static
     {
         $this->business = $business;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Department>
+     */
+    public function getDepartments(): Collection
+    {
+        return $this->departments;
+    }
+
+    public function addDepartment(Department $department): static
+    {
+        if (!$this->departments->contains($department)) {
+            $this->departments->add($department);
+            $department->setBusinessUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepartment(Department $department): static
+    {
+        if ($this->departments->removeElement($department)) {
+            // set the owning side to null (unless already changed)
+            if ($department->getBusinessUser() === $this) {
+                $department->setBusinessUser(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,40 @@
+{% extends 'business/base.html.twig' %}
+
+{% block title %}Business Users{% endblock %}
+
+{% block body %}
+    <h1>Business Users</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for businessUser in businessUsers %}
+        {% if 'ROLE_BUSINESS' not in businessUser.roles %}
+
+           <tr>
+                <td>{{ businessUser.id }}</td>
+                <td>{{ businessUser.username }}</td>
+                <td>{{ businessUser.email }}</td>
+                <td>
+                    <a href="{{ path('business_user_show', {'guid': businessUser.guid}) }}">Show</a>
+                    <a href="{{ path('edit_user', {'guid': businessUser.guid}) }}">Edit</a>
+                </td>
+            </tr>  
+           {% endif %}
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('new_user') }}">Create new</a>
+{% endblock %}

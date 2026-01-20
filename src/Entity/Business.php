@@ -30,9 +30,16 @@ class Business
     #[ORM\ManyToOne(inversedBy: 'businesses')]
     private ?Category $category = null;
 
+    /**
+     * @var Collection<int, Department>
+     */
+    #[ORM\OneToMany(targetEntity: Department::class, mappedBy: 'business')]
+    private Collection $departments;
+
     public function __construct()
     {
         $this->businessUsers = new ArrayCollection();
+        $this->departments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -105,4 +112,13 @@ class Business
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Department>
+     */
+    public function getDepartments(): Collection
+    {
+        return $this->departments;
+    }
+
 }

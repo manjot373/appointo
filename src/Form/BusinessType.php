@@ -18,7 +18,7 @@ class BusinessType extends AbstractType
             ->add('address')
             ->add('category', EntityType::class, [
                 'class' => Category::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
         ;
     }

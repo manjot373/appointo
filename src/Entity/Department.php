@@ -24,6 +24,9 @@ class Department
     #[ORM\Column(type: Types::GUID, unique: true)]
     private ?string $guid = null;
 
+    #[ORM\ManyToOne(inversedBy: 'departments')]
+    private ?BusinessUser $businessUser = null;
+
     // /**
     //  * @var Collection<int, Appointment>
     //  */
@@ -95,4 +98,16 @@ class Department
 
     //     return $this;
     // }
+
+    public function getBusinessUser(): ?BusinessUser
+    {
+        return $this->businessUser;
+    }
+
+    public function setBusinessUser(?BusinessUser $businessUser): static
+    {
+        $this->businessUser = $businessUser;
+
+        return $this;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Business;
 use App\Entity\BusinessUser;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -14,6 +15,6 @@ class BusinessService
     }
     public function getBusinessByUser($user)
     {
-        return $this->em->getRepository(BusinessUser::class)->findOneBy(['id' => $user->getId()]);
+        return $this->em->getRepository(Business::class)->findOneBy(['id' => $user->getBusiness()]);
     }
 }
