@@ -14,8 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class BusinessUserController extends AbstractController{
 
+#[Route('/business/staff')]
+
+final class BusinessUserController extends AbstractController{
+    
 
 private UserPasswordHasherInterface $passwordHasher;
 
@@ -23,8 +26,8 @@ public function __construct(UserPasswordHasherInterface $passwordHasher){
     $this->passwordHasher = $passwordHasher;
 }
 
-#[Route('/business', name:'business_index') ]
-public function business_index(EntityManagerInterface $em, BusinessService $bs){
+#[Route('/', name:'user_index') ]
+public function user_index(EntityManagerInterface $em, BusinessService $bs){
 
     $user = $this->getUser();
     $business = $bs->getBusinessByUser($user);
@@ -34,7 +37,7 @@ public function business_index(EntityManagerInterface $em, BusinessService $bs){
     return $this->render('business/businessuser/index.html.twig', ['businessUsers' => $businessUsers]);
 }
 
-#[Route('/business/new', name:'new_user')]
+#[Route('/new', name:'new_user')]
 public function new_user(EntityManagerInterface $em, BusinessService $bs, Request $request){
     $user = $this->getUser();
     $business = $bs->getBusinessByUser($user);
@@ -59,13 +62,13 @@ public function new_user(EntityManagerInterface $em, BusinessService $bs, Reques
     $em->persist($businessUser);
     $em->flush();
 
-    return $this->redirectToRoute('business_index');
+    return $this->redirectToRoute('user_index');
     }
 
     return $this->render('business/businessuser/create.html.twig', ['form' => $form->createView()]);
 }
 
-#[Route('/business/{guid}/edit', name:'edit_user')]
+#[Route('/{guid}/edit', name:'edit_user')]
 public function edit_user(EntityManagerInterface $em, BusinessService $bs, Request $request, $guid){
 
     $user = $this->getUser();
@@ -91,7 +94,7 @@ public function edit_user(EntityManagerInterface $em, BusinessService $bs, Reque
     $em->persist($businessUser);
     $em->flush();
 
-    return $this->redirectToRoute('business_index');
+    return $this->redirectToRoute('user_index');
 
 }
 
@@ -100,7 +103,7 @@ return $this->render('business/businessuser/edit.html.twig', ['businessUser' => 
 
 
 
-#[Route('/business/{guid}/delete', name:'delete_user', methods:['POST'])]
+#[Route('/{guid}/delete', name:'delete_user', methods:['POST'])]
 public function delete_user(EntityManagerInterface $em, BusinessService $bs, $guid, Request $request){
     $user = $this->getUser();
     $businessUser = $em->getRepository(BusinessUser::class)->findOneBy(['guid' => $guid]);
@@ -111,7 +114,7 @@ public function delete_user(EntityManagerInterface $em, BusinessService $bs, $gu
             $em->flush();
 
             }
-            return $this->redirectToRoute('business_index',[], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('user_index',[], Response::HTTP_SEE_OTHER);
 
     }
 }

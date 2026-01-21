@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -27,16 +25,9 @@ class Department
     #[ORM\ManyToOne(inversedBy: 'departments')]
     private ?BusinessUser $businessUser = null;
 
-    // /**
-    //  * @var Collection<int, Appointment>
-    //  */
-    // #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'department')]
-    // private Collection $appointments;
-
-    // public function __construct()
-    // {
-    //     $this->appointments = new ArrayCollection();
-    // }
+    #[ORM\ManyToOne(inversedBy: 'departments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Business $business = null;
 
     #[ORM\PrePersist]
     public function generateGuid(): void
@@ -69,35 +60,6 @@ class Department
         return $this;
     }
 
-    // /**
-    //  * @return Collection<int, Appointment>
-    //  */
-    // public function getAppointments(): Collection
-    // {
-    //     return $this->appointments;
-    // }
-
-    // public function addAppointment(Appointment $appointment): static
-    // {
-    //     if (!$this->appointments->contains($appointment)) {
-    //         $this->appointments->add($appointment);
-    //         $appointment->setDepartment($this);
-    //     }
-
-    //     return $this;
-    // }
-
-    // public function removeAppointment(Appointment $appointment): static
-    // {
-    //     if ($this->appointments->removeElement($appointment)) {
-    //         // set the owning side to null (unless already changed)
-    //         if ($appointment->getDepartment() === $this) {
-    //             $appointment->setDepartment(null);
-    //         }
-    //     }
-
-    //     return $this;
-    // }
 
     public function getBusinessUser(): ?BusinessUser
     {
@@ -110,4 +72,17 @@ class Department
 
         return $this;
     }
+
+    public function getBusiness(): ?Business
+    {
+        return $this->business;
+    }
+
+    public function setBusiness(?Business $business): static
+    {
+        $this->business = $business;
+
+        return $this;
+    }
+
 }

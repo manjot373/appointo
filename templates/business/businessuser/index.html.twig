@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>Username</th>
                 <th>Email</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +23,6 @@
                 <td>{{ businessUser.username }}</td>
                 <td>{{ businessUser.email }}</td>
                 <td>
-                    <a href="{{ path('business_user_show', {'guid': businessUser.guid}) }}">Show</a>
                     <a href="{{ path('edit_user', {'guid': businessUser.guid}) }}">Edit</a>
                 </td>
             </tr>  

@@ -5,6 +5,7 @@ namespace App\Controller\admin;
 use App\Entity\Business;
 use App\Form\BusinessType;
 use App\Repository\BusinessRepository;
+use App\Services\BusinessService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,8 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 final class BusinessController extends AbstractController
 {
     #[Route(name: 'app_business_index', methods: ['GET'])]
-    public function index(BusinessRepository $businessRepository): Response
+    public function index(BusinessRepository $businessRepository, BusinessService $bs): Response
     {
+       
         return $this->render('admin/business/index.html.twig', [
             'businesses' => $businessRepository->findAll(),
         ]);
@@ -33,7 +35,9 @@ final class BusinessController extends AbstractController
             $entityManager->persist($business);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_business_index', [], Response::HTTP_SEE_OTHER);
+            $lastBusiness = $entityManager->getRepository(Business::class)->findLastOne();
+
+            return $this->redirectToRoute('app_business_show', ['id' => $lastBusiness->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/business/new.html.twig', [

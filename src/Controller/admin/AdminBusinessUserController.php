@@ -32,8 +32,7 @@ final class AdminBusinessUserController extends AbstractController
     #[Route('/', name: 'business_user_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $user = $this->getUser();
-        $business = $this->bs->getBusinessByUser($user);
+        $businessUser = $this->getUser();
         $businessUser = $entityManager->getRepository(BusinessUser::class)->findAll();
         return $this->render('admin/businessuser/index.html.twig', [
             'businessUser' => $businessUser
@@ -46,7 +45,6 @@ final class AdminBusinessUserController extends AbstractController
     #[Route('/new', name: 'business_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-       
         $bu = new BusinessUser();
         $business = $entityManager->getRepository(Business::class)->findAll();
        

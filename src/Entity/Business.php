@@ -121,4 +121,26 @@ class Business
         return $this->departments;
     }
 
+    public function addDepartment(Department $department): static
+    {
+        if (!$this->departments->contains($department)) {
+            $this->departments->add($department);
+            $department->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDepartment(Department $department): static
+    {
+        if ($this->departments->removeElement($department)) {
+            // set the owning side to null (unless already changed)
+            if ($department->getBusiness() === $this) {
+                $department->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

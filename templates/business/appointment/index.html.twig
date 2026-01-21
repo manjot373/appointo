@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Name</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -16,6 +17,7 @@
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.id }}</td>
+                <td>{{ appointment.name }}</td>
                 <td>
                     <a href="{{ path('app_appointment_show', {'id': appointment.id}) }}">show</a>
                     <a href="{{ path('app_appointment_edit', {'id': appointment.id}) }}">edit</a>

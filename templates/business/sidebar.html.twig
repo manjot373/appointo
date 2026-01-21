@@ -41,9 +41,22 @@
 			</a>
 			<div id="categories" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 				<div class="bg-white py-2 collapse-inner rounded">
-					<h6 class="collapse-header">Categories:</h6>
+					<h6 class="collapse-header">Departments:</h6>
 					<a class="collapse-item" href="{{ path('app_department_new') }} ">Add Department</a>
 					<a class="collapse-item" href="{{ path('app_department_index') }}">Department List</a>
+				</div>
+			</div>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#staff" aria-expanded="true" aria-controls="collapseTwo">
+				<i class="fas fa-fw fa-cog"></i>
+				<span>Staff</span>
+			</a>
+			<div id="staff" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+				<div class="bg-white py-2 collapse-inner rounded">
+					<h6 class="collapse-header">Staff:</h6>
+					<a class="collapse-item" href="{{ path('new_user') }} ">Add New Staff</a>
+					<a class="collapse-item" href="{{ path('user_index') }}">Staff List</a>
 				</div>
 			</div>
 		</li>

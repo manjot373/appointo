@@ -2,8 +2,10 @@
 
 namespace App\Controller\business;
 
+use App\Entity\Business;
 use App\Entity\Department;
 use App\Form\DepartmentType;
+use App\Services\BusinessService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,15 +26,16 @@ final class DepartmentController extends AbstractController
     }
 
     #[Route('/new', name: 'app_department_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, BusinessService $bs ): Response
     {
         $department = new Department();
         $form = $this->createForm(DepartmentType::class, $department);
         $form->handleRequest($request);
         $businessUser = $this->getUser();
+        $business = $bs->getBusinessByUser($businessUser);
         if ($form->isSubmitted() && $form->isValid()) {
             $department->setBusinessUser($businessUser);
-
+            $department->setBusiness($business);
             $entityManager->persist($department);
             $entityManager->flush();
 

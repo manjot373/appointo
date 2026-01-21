@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/staff/appointment')]
+#[Route('/business/appointment')]
 final class AppointmentController extends AbstractController
 {
-    #[Route(name: 'app_appointment_index', methods: ['GET'])]
+    #[Route('/', name: 'app_appointment_index', methods: ['GET'])]
     public function index(AppointmentRepository $appointmentRepository): Response
     {
         return $this->render('business/appointment/index.html.twig', [

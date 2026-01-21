@@ -16,6 +16,17 @@ class BusinessRepository extends ServiceEntityRepository
         parent::__construct($registry, Business::class);
     }
 
+
+
+       public function findLastOne(): ?Business
+{
+    return $this->createQueryBuilder('b')
+        ->orderBy('b.id', 'DESC')
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+
     //    /**
     //     * @return Business[] Returns an array of Business objects
     //     */
