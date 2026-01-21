@@ -115,7 +115,7 @@ final class AdminBusinessUserController extends AbstractController
     #[Route('/{guid}', name: 'business_user_delete', methods: ['POST'])]
     public function delete(Request $request, BusinessUser $bu, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$bu->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$bu->getGuid(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($bu);
             $entityManager->flush();
         }

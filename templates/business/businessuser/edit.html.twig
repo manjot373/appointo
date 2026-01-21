@@ -5,10 +5,8 @@
 {{ form_start(form) }}
 {{ form_widget(form) }}
 <button type="submit" class='btn btn-primary'>Update</button>
+{{ form_end(form) }}
 <span class="delete-form">
             {{ include('business/businessuser/delete_form.html.twig') }}
-        </span>
-{{ form_end(form) }}
-
-
+  </span>
 {% endblock %}

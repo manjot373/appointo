@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -94,25 +95,23 @@ public function edit_user(EntityManagerInterface $em, BusinessService $bs, Reque
 
 }
 
-return $this->render('business/businessuser/edit.html.twig', ['form' => $form->createView()]);
+return $this->render('business/businessuser/edit.html.twig', ['businessUser' => $businessUser, 'form' => $form]);
 }
 
-}
 
-// #[Route('/business/{guid}/delete', name:'delete_user')]
-// public function delete_user(EntityManagerInterface $em, BusinessService $bs, $guid, Request $request){
-//     $user = $this->getUser();
-//     $businessUser = $em->getRepository(BusinessUser::class)->findOneBy(['guid' => $guid]);
+
+#[Route('/business/{guid}/delete', name:'delete_user', methods:['POST'])]
+public function delete_user(EntityManagerInterface $em, BusinessService $bs, $guid, Request $request){
+    $user = $this->getUser();
+    $businessUser = $em->getRepository(BusinessUser::class)->findOneBy(['guid' => $guid]);
     
 
-//     if ($this->isCsrfTokenValid('delete'.$businessUser->getGuid(), $request->getPayload()->getString('_token'))) {
-//             $em->remove($businessUser);
-//             $em->flush();
+    if ($this->isCsrfTokenValid('delete'.$businessUser->getGuid(), $request->getPayload()->getString('_token'))) {
+            $em->remove($businessUser);
+            $em->flush();
 
-//             return $this->redirectToRoute('business_index');
-//         }
+            }
+            return $this->redirectToRoute('business_index',[], Response::HTTP_SEE_OTHER);
 
-//         return $this->render('business/businessuser/delete_form.html.twig', ['businessUser' => $businessUser]);
-//     }
-
-// }
+    }
+}
