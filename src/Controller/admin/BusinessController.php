@@ -3,6 +3,7 @@
 namespace App\Controller\admin;
 
 use App\Entity\Business;
+use App\Entity\BusinessUser;
 use App\Form\BusinessType;
 use App\Repository\BusinessRepository;
 use App\Services\BusinessService;
@@ -47,10 +48,13 @@ final class BusinessController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_business_show', methods: ['GET'])]
-    public function show(Business $business): Response
+    public function show(Business $business,EntityManagerInterface $entityManager, $id): Response
     {
+        $business = $entityManager->getRepository(Business::class)->findOneBy(['id' => $id]);
+        $businessUser = $entityManager->getRepository(BusinessUser::class)->findBy(['business' => $business]);
         return $this->render('admin/business/show.html.twig', [
             'business' => $business,
+            'businessUser' => $businessUser,
         ]);
     }
 

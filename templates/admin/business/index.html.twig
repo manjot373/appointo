@@ -1,9 +1,11 @@
 {% extends 'admin/base.html.twig' %}
 
-{% block title %}Business index{% endblock %}
+{% block title %}Business List{% endblock %}
 
 {% block body %}
-    <h1>Business index</h1>
+    <h1>Business List</h1>
+
+     <a class="btn btn-primary mb-3" href="{{ path('app_business_new') }}">Create new</a>
 
     <table class="table">
         <thead>
@@ -24,7 +26,7 @@
                     <a class="btn btn-primary" href="{{ path('app_business_show', {'id': business.id}) }}">show</a>
                     <a class="btn btn-secondary" href="{{ path('app_business_edit', {'id': business.id}) }}">edit</a>
                     
-                    <a href="{{ path('business_user_new') }}" class="btn btn-primary">Create user</a>
+                    {# <a href="{{ path('business_user_new') }}" class="btn btn-primary">Create user</a> #}
 
                 </td>
             </tr>
@@ -36,5 +38,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_business_new') }}">Create new</a>
 {% endblock %}

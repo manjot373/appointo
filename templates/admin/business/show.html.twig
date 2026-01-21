@@ -3,28 +3,97 @@
 {% block title %}Business{% endblock %}
 
 {% block body %}
-    <h1>Business</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ business.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ business.name }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ business.address }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container-fluid">
 
-    <a href="{{ path('app_business_index') }}">back to list</a>
+    <div class="row">
 
-    <a href="{{ path('app_business_edit', {'id': business.id}) }}">edit</a>
+        <!-- LEFT CARD : BUSINESS DETAILS -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Business Details</h5>
+                </div>
+                <div class="card-body">
 
-    {{ include('admin/business/_delete_form.html.twig') }}
+                    <table class="table table-borderless mb-3">
+                        <tbody>
+                            <tr>
+                                <th class="w-25">ID</th>
+                                <td>{{ business.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ business.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Address</th>
+                                <td>{{ business.address }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('app_business_index') }}" class="btn btn-outline-secondary btn-sm">
+                            Back to List
+                        </a>
+
+                        <a href="{{ path('app_business_edit', {'id': business.id}) }}" 
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        {{ include('admin/business/_delete_form.html.twig') }}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- RIGHT CARD : BUSINESS USERS -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Business Users</h5>
+                    <a href="{{ path('business_user_new', {'id': business.id}) }}" class="btn btn-sm btn-primary">
+                        Create New User
+                    </a>
+                </div>
+
+                <div class="card-body">
+
+                    {% if not businessUser %}
+                        <div class="alert alert-info mb-0">
+                            No Users Found
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table table-striped align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in businessUser %}
+                                    <tr>
+                                        <td>{{ user.id }}</td>
+                                        <td>{{ user.username }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

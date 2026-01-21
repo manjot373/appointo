@@ -30,43 +30,34 @@ final class AdminBusinessUserController extends AbstractController
 
     }
     #[Route('/', name: 'business_user_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, BusinessService $bs): Response
     {
         $businessUser = $this->getUser();
         $businessUser = $entityManager->getRepository(BusinessUser::class)->findAll();
         return $this->render('admin/businessuser/index.html.twig', [
-            'businessUser' => $businessUser
+            'businessUser' => $businessUser,
         ]);
     }
 
     
     // is granted ROLE_STAFF
     // #[IsGranted('ROLE_ADMIN')]
-    #[Route('/new', name: 'business_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'business_user_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, BusinessService $bs, $id): Response
     {
-        $bu = new BusinessUser();
-        $business = $entityManager->getRepository(Business::class)->findAll();
-       
-        $form = $this->createForm(BusinessUserType::class, $bu)
-        ->add('business', ChoiceType::class, [
-            "choices" => $business,
-            "placeholder" => "Select Business",
-            "required" => true,
-            "mapped" => false,
-            "choice_label" => function ($business) {
-                return $business->getName();
-            }
-        ]);
 
+        $id = $request->get('id');
+        $business = $entityManager->getRepository(Business::class)->findOneBy(['id' => $id]);
+        $bu = new BusinessUser();
+        $form = $this->createForm(BusinessUserType::class, $bu);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $this->hashedPassword->hashPassword($bu, $bu->getPassword());
-            $bu->setBusiness($form->get('business')->getData());
 
             $bu->setPassword($hashedPassword);
             $bu->setRoles(["ROLE_BUSINESS", "ROLE_STAFF"]);
+            $bu->setBusiness($business);
             // if(in_array('ROLE_STAFF', $bu->getRoles())){
             //     $bu->setBusiness($business);
             // }
@@ -79,6 +70,7 @@ final class AdminBusinessUserController extends AbstractController
         return $this->render('admin/businessuser/new.html.twig', [
             'businessUser' => $bu,
             'form' => $form,
+            'business' => $business
         ]);
     }
 
