@@ -1,4 +1,4 @@
-{% extends 'business/appointment/base.html.twig' %}
+{% extends 'business/base.html.twig' %}
 
 {% block title %}Appointment index{% endblock %}
 
@@ -10,17 +10,22 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>actions</th>
+                <th>Customer Contact</th>
+                <th>Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for appointment in appointments %}
             <tr>
                 <td>{{ appointment.id }}</td>
-                <td>{{ appointment.name }}</td>
+                <td>{{ appointment.customerName }}</td>
+                <td>{{ appointment.customerContact }}</td>
+                <td>{{ appointment.status }}</td>
                 <td>
                     <a href="{{ path('app_appointment_show', {'id': appointment.id}) }}">show</a>
                     <a href="{{ path('app_appointment_edit', {'id': appointment.id}) }}">edit</a>
+                    <a href="{{ path('app_appointment_slot_new', {'id': appointment.id}) }}">Add New Slot</a>
                 </td>
             </tr>
         {% else %}

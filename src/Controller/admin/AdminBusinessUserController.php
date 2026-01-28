@@ -64,7 +64,7 @@ final class AdminBusinessUserController extends AbstractController
             $entityManager->persist($bu);
             $entityManager->flush();
 
-            return $this->redirectToRoute('business_user_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_business_show', ['id' => $id], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin/businessuser/new.html.twig', [

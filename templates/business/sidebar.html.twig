@@ -1,14 +1,62 @@
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+{# Sidebar menu configuration #}
+{% set sidebar = [
+    {
+        title: 'Categories',
+        icon: 'fas fa-fw fa-cog',
+        id: 'categoriesNavBox',
+        role: "ROLE_STAFF",
+        routes: ['app_category_new', 'app_category_index'],
+        items: [
+            { label: 'Add New Category', route: 'app_category_new' },
+            { label: 'Category List',   route: 'app_category_index' }
+        ]
+    },
+    {
+        title: 'Business',
+        icon: 'fas fa-fw fa-cog',
+        id: 'businessNavBox',
+        role: "ROLE_STAFF",
+        routes: ['app_business_index', 'app_business_new'],
+        items: [
+            { label: 'Show All Business', route: 'app_business_index' },
+            { label: 'Add New Business',  route: 'app_business_new' }
+        ]
+    },
+	{
+        title: 'Appointments',
+        icon: 'fas fa-fw fa-cog',
+        id: 'appointmentNavBox',
+        role: "ROLE_STAFF",
+        routes: ['app_appointment_new', 'app_appointment_index'],
+        items: [
+            { label: 'Add New Appointment', route: 'app_appointment_new' },
+            { label: 'Appointment List',   route: 'app_appointment_index' }
+        ]
+    },
+	
+] %}
+ {# {
+        title: 'Appointments Slot',
+        icon: 'fas fa-fw fa-cog',
+        id: 'slotNavBox',
+        role: "ROLE_STAFF",
+        routes: ['app_appointment_slot_new', 'app_appointment_slot_index'],
+        items: [
+            { label: 'Add New Appointment', route: 'app_appointment_slot_new' },
+            { label: 'Appointment List',   route: 'app_appointment_slot_index' }
+        ]
+    } #}
+
 
 	<ul
 		class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
 		<!-- Sidebar - Brand -->
-		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-			<div class="sidebar-brand-icon rotate-n-15">
-				<i class="fas fa-laugh-wink"></i>
-			</div>
+		<a class="sidebar-brand d-flex align-items-center justify-content-center mt-3" href="{{ path ('business_dashboard') }}">
 			<div class="sidebar-brand-text mx-3">Appointo
-				<sup></sup>
+				<div><small>Business Admin Area</small></div>
 			</div>
 		</a>
 
@@ -18,103 +66,41 @@
 
 		<!-- Nav Item - Dashboard -->
 		<li class="nav-item active">
-			<a class="nav-link" href="index.html">
+			<a class="nav-link" href="{{ path ('business_dashboard') }}">
 				<i class="fas fa-fw fa-tachometer-alt"></i>
 				<span>Dashboard</span>
 			</a>
 		</li>
-
 		<!-- Divider -->
-		<hr
-		class="sidebar-divider">
+		 {% for menu in sidebar %}
+         {# {% if is_granted(menu.role) %} #}
+        <li class="nav-item">
 
-		<!-- Heading -->
-		<div class="sidebar-heading">
-			Interface
-		</div>
+            <a class="nav-link collapsed"
+               href="#"
+               data-toggle="collapse"
+               data-target="#{{ menu.id }}">
+                <i class="{{ menu.icon }}"></i>
+                <span>{{ menu.title }}</span>
+            </a>
 
-		<!-- Nav Item - Pages Collapse Menu -->
-		<li class="nav-item">
-			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#categories" aria-expanded="true" aria-controls="collapseTwo">
-				<i class="fas fa-fw fa-cog"></i>
-				<span>Departments</span>
-			</a>
-			<div id="categories" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-				<div class="bg-white py-2 collapse-inner rounded">
-					<h6 class="collapse-header">Departments:</h6>
-					<a class="collapse-item" href="{{ path('app_department_new') }} ">Add Department</a>
-					<a class="collapse-item" href="{{ path('app_department_index') }}">Department List</a>
-				</div>
-			</div>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#staff" aria-expanded="true" aria-controls="collapseTwo">
-				<i class="fas fa-fw fa-cog"></i>
-				<span>Staff</span>
-			</a>
-			<div id="staff" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-				<div class="bg-white py-2 collapse-inner rounded">
-					<h6 class="collapse-header">Staff:</h6>
-					<a class="collapse-item" href="{{ path('new_user') }} ">Add New Staff</a>
-					<a class="collapse-item" href="{{ path('user_index') }}">Staff List</a>
-				</div>
-			</div>
-		</li>
+            <div id="{{ menu.id }}"
+                 class="collapse {{ currentRoute in menu.routes ? 'show' : '' }}"
+                 data-parent="#accordionSidebar">
 
-		<!-- Divider -->
-		<hr
-		class="sidebar-divider">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    {% for item in menu.items %}
+                        <a class="collapse-item {{ currentRoute == item.route ? 'active' : '' }}"
+                           href="{{ path(item.route) }}">
+                           {{ item.label }}
+                        </a>
+                    {% endfor %}
+                </div>
 
-		<!-- Heading -->
-		<div class="sidebar-heading">
-			Addons
-		</div>
-
-		<!-- Nav Item - Pages Collapse Menu -->
-		<li class="nav-item">
-			<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-				<i class="fas fa-fw fa-folder"></i>
-				<span>Pages</span>
-			</a>
-			<div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-				<div class="bg-white py-2 collapse-inner rounded">
-					<h6 class="collapse-header">Login Screens:</h6>
-					<a class="collapse-item" href="login.html">Login</a>
-					<a class="collapse-item" href="register.html">Register</a>
-					<a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-					<div class="collapse-divider"></div>
-					<h6 class="collapse-header">Other Pages:</h6>
-					<a class="collapse-item" href="404.html">404 Page</a>
-					<a class="collapse-item" href="blank.html">Blank Page</a>
-				</div>
-			</div>
-		</li>
-
-		<!-- Nav Item - Charts -->
-		<li class="nav-item">
-			<a class="nav-link" href="charts.html">
-				<i class="fas fa-fw fa-chart-area"></i>
-				<span>Charts</span>
-			</a>
-		</li>
-
-		<!-- Nav Item - Tables -->
-		<li class="nav-item">
-			<a class="nav-link" href="tables.html">
-				<i class="fas fa-fw fa-table"></i>
-				<span>Tables</span>
-			</a>
-		</li>
-
-		<!-- Divider -->
-		<hr
-		class="sidebar-divider d-none d-md-block">
-
-		<!-- Sidebar Toggler (Sidebar) -->
-		<div class="text-center d-none d-md-inline">
-			<button class="rounded-circle border-0" id="sidebarToggle"></button>
-		</div>
-
+            </div>
+        </li>
+        {# {% endif %} #}
+    {% endfor %}
 		
 
 	</ul>

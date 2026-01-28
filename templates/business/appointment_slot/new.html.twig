@@ -1,0 +1,95 @@
+{# templates\business\appointment_slot\new.html.twig  #}
+{% extends 'business/base.html.twig' %}
+
+{% block title %}New AppointmentSlot{% endblock %}
+					{% block css %}
+                    		<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+			{% endblock %}
+
+{% block body %}
+    <h1>Create new AppointmentSlot</h1>
+
+    <div id="calendar"></div>
+
+    {{ include('business/appointment_slot/_form.html.twig') }}
+
+    <a href="{{ path('app_appointment_slot_index') }}">back to list</a>
+{% endblock %}
+			{% block javascript %}
+            		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+            <script>
+document.addEventListener('DOMContentLoaded', function() {
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        height: 'auto',
+        timeZone: 'Asia/Kolkata',   // ← add this
+        selectable: true,
+        allDaySlot: false,
+
+        // slotMinTime: '09:00:00',
+        // slotMaxTime: '17:00:00',
+
+    //     validRange: function(nowDate) {
+    //     return { start: nowDate };
+    // },
+
+    selectAllow: function(selectInfo) {
+        return selectInfo.start >= new Date();
+    },
+        slotLaneDidMount: function(info) {
+    let now = new Date();
+
+    // Compare slot time to current time
+    if (info.date < now) {
+        info.el.style.backgroundColor = '#f2f2f2';
+        info.el.style.opacity = '0.6';
+    }
+},
+
+        // Load existing slots
+        events: '/business/api/slots?start=' + new Date().toISOString(),
+
+        // Click on empty time cell
+        select: function(info) {
+            let start = info.startStr;
+            
+            let duration = prompt("Enter duration in minutes:");
+
+            if (!duration) return;
+
+            let startDate = info.start;   // Date object in local time
+
+            let endDate = new Date(startDate);
+            endDate.setMinutes(endDate.getMinutes() + parseInt(duration));
+
+            let end = new Date(info.start);
+            end.setMinutes(end.getMinutes() + parseInt(duration));
+
+            // Send to backend
+            fetch('/business/api/slots_create', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    startTime: startDate.toISOString(),
+                    endTime: endDate.toISOString(),
+                    appointmentId: {{ appointmentId }}
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    calendar.refetchEvents();
+                } else {
+                    alert(data.error);
+                }
+            });
+        }
+    });
+
+    calendar.render();
+});
+</script>
+
+			{% endblock %}

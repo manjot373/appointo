@@ -34,7 +34,7 @@ class LoginController extends AbstractController
     }
 
 
-    #[Route('/', name: 'admin_dashboard')]
+    #[Route('/admin/dashboard', name: 'admin_dashboard')]
     function admin_dashboard()
     {
 

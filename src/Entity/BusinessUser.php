@@ -51,10 +51,18 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Department::class, mappedBy: 'businessUser')]
     private Collection $departments;
 
+    /**
+     * @var Collection<int, Appointment>
+     */
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'assignedUser')]
+    private Collection $appointments;
+
+
 
     public function __construct()
     {
         $this->departments = new ArrayCollection();
+        $this->appointments = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -203,6 +211,35 @@ class BusinessUser implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($department->getBusinessUser() === $this) {
                 $department->setBusinessUser(null);
+            }
+        }
+
+        return $this;
+    }
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): static
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setAssignedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointment $appointment): static
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            // set the owning side to null (unless already changed)
+            if ($appointment->getAssignedUser() === $this) {
+                $appointment->setAssignedUser(null);
             }
         }
 

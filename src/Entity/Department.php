@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DepartmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -28,6 +30,17 @@ class Department
     #[ORM\ManyToOne(inversedBy: 'departments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Business $business = null;
+
+    /**
+     * @var Collection<int, Appointment>
+     */
+    #[ORM\OneToMany(targetEntity: Appointment::class, mappedBy: 'departmentt')]
+    private Collection $appointments;
+
+    public function __construct()
+    {
+        $this->appointments = new ArrayCollection();
+    }
 
     #[ORM\PrePersist]
     public function generateGuid(): void
@@ -81,6 +94,36 @@ class Department
     public function setBusiness(?Business $business): static
     {
         $this->business = $business;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Appointment>
+     */
+    public function getAppointments(): Collection
+    {
+        return $this->appointments;
+    }
+
+    public function addAppointment(Appointment $appointment): static
+    {
+        if (!$this->appointments->contains($appointment)) {
+            $this->appointments->add($appointment);
+            $appointment->setDepartmentt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAppointment(Appointment $appointment): static
+    {
+        if ($this->appointments->removeElement($appointment)) {
+            // set the owning side to null (unless already changed)
+            if ($appointment->getDepartmentt() === $this) {
+                $appointment->setDepartmentt(null);
+            }
+        }
 
         return $this;
     }
